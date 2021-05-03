@@ -3,14 +3,11 @@ package com.company.UDP;
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class ClientVelocimetre {
-    private int portDesti;
-    private String Nom, ipSrv;
+    private int medianNumber;
+    private int counter;
     private MulticastSocket multisocket;
-    private InetAddress multicastIP;
     boolean continueRunning = true;
     InetSocketAddress groupMulticast;
     NetworkInterface netIf;
@@ -18,7 +15,7 @@ public class ClientVelocimetre {
     public ClientVelocimetre() {
         try {
             multisocket = new MulticastSocket(5557);
-            multicastIP = InetAddress.getByName("224.0.34.124");
+            InetAddress multicastIP = InetAddress.getByName("224.0.34.124");
             groupMulticast = new InetSocketAddress(multicastIP, 5557);
             netIf = NetworkInterface.getByName("wlp0s20f3");
         } catch (IOException e) {
@@ -40,6 +37,13 @@ public class ClientVelocimetre {
 
     private void medianVelocity(byte[] data) {
         System.out.println(ByteBuffer.wrap(data).getInt());
+        medianNumber += ByteBuffer.wrap(data).getInt();
+        counter++;
+        if (counter == 5) {
+            System.out.println("Media: " + medianNumber / 5);
+            medianNumber = 0;
+            counter = 0;
+        }
     }
 
     public static void main(String[] args) {

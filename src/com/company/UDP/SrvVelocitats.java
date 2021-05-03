@@ -7,7 +7,6 @@ import java.net.MulticastSocket;
 import java.nio.ByteBuffer;
 
 public class SrvVelocitats {
-
     MulticastSocket socket;
     InetAddress multicastIP;
     int port;
@@ -35,8 +34,6 @@ public class SrvVelocitats {
             } catch (InterruptedException ex) {
                 ex.getMessage();
             }
-
-
         }
         socket.close();
     }
@@ -45,7 +42,5 @@ public class SrvVelocitats {
         SrvVelocitats srvVel = new SrvVelocitats(5557, "224.0.34.124");
         srvVel.runServer();
         System.out.println("Parat!");
-
     }
-
 }
