@@ -41,6 +41,10 @@ public class ClientVelocimetre {
         counter++;
         if (counter == 5) {
             System.out.println("Media: " + medianNumber / 5);
+//          ESTO LO HE PUESTO PARA QUE NO SEA UN BUCLE INFINITO Y PUEDA ACABAR LA CONEXION
+            if (medianNumber / 5 > 60) {
+                continueRunning = false;
+            }
             medianNumber = 0;
             counter = 0;
         }
