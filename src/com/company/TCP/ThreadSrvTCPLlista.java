@@ -7,13 +7,11 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 public class ThreadSrvTCPLlista implements Runnable{
-
-    Socket clientSocket = null;
-    BufferedReader in = null;
-    PrintStream out = null;
+    Socket clientSocket;
+    BufferedReader in;
+    PrintStream out;
     String msgEntrant, msgSortint;
     boolean acabat;
-    int intentsJugador;
 
     public ThreadSrvTCPLlista(Socket clientSocket) throws IOException {
         this.clientSocket = clientSocket;
@@ -27,20 +25,14 @@ public class ThreadSrvTCPLlista implements Runnable{
     public void run() {
         try {
             while(!acabat) {
-
                 msgSortint = generaResposta(msgEntrant);
-
                 out.println(msgSortint);
                 out.flush();
                 msgEntrant = in.readLine();
-                intentsJugador = Integer.parseInt(in.readLine());
-
-
             }
         }catch(IOException e){
             System.out.println(e.getLocalizedMessage());
         }
-        System.out.println(msgEntrant + " - intents: " + intentsJugador);
         try {
             clientSocket.close();
         } catch (IOException e) {
