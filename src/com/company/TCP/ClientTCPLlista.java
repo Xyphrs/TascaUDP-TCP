@@ -24,20 +24,21 @@ public class ClientTCPLlista extends Thread {
         Llista serverData;
         Llista request;
         Socket socket;
-        ObjectInputStream in;
         ObjectOutputStream out;
+        ObjectInputStream in;
 
         try {
             socket = new Socket(InetAddress.getByName(hostname), port);
-            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            while(true){
-                serverData = (Llista) in.readObject();
-                if (serverData != null) break;
-                request = getRequest();
-                out.writeObject(request);
-                out.flush();
-            }
+            in = new ObjectInputStream(socket.getInputStream());
+
+            request = getRequest();
+            out.writeObject(request);
+            out.flush();
+            System.out.println(request.getNom() + " antes del servidor => " + request.getNumberList());
+
+            serverData = (Llista) in.readObject();
+            System.out.println(serverData.getNom() + " despues del servidor => " + serverData.getNumberList());
             close(socket);
         } catch (UnknownHostException ex) {
             System.out.println("Error de connexió. No existeix el host: " + ex.getMessage());
@@ -54,15 +55,12 @@ public class ClientTCPLlista extends Thread {
         String nom;
 
         System.out.println("Introduce un nombre para la lista");
-        nom = scanner.next();
+        nom = scanner.nextLine();
 
         for (int i = 0; i < 10; i++) {
             System.out.println("Introduce un numero");
             integerList.add(scanner.nextInt());
         }
-
-        System.out.println(integerList);
-
         return new Llista(nom, integerList);
     }
 
